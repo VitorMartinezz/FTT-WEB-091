@@ -38,7 +38,7 @@ public class ExamApi extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setStatus(200); //200 - OK - Padrão (Default)
 
-		String examId = request.getParameter("doctor-id");
+		String examId = request.getParameter("exam-id");
 		ExamDao examDao = new ExamDao();
 		
 	    if(examId != null) {

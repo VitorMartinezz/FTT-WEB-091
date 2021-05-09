@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de médicos</title>
+<style>
+	body {font-family:Verdana;}
+</style>
+</head>
+<body>
+<h1>Médico</h1>
+<form method="post" action="/FTT-WEB-091/DoctorApi">
+<p><label for="doctor-id">ID: </label><input type="number" id="doctor-id" name="doctor-id" required></p>
+<p><label for="doctor-name">Name: </label><input type="text" id="doctor-name" name="doctor-name" required></p>
+<p><label for="doctor-email">E-Mail: </label><input type="email" id="doctor-email" name="doctor-email" required></p>
+<p><label for="doctor-crm">CRM: </label><input type="text" id="doctor-crm" name="doctor-crm" required></p>
+<p><label for="doctor-unity">Unidade: </label><input type="text" id="doctor-unity" name="doctor-unity" required></p>
+<input type="submit">
+</form>
+</body>
+</html>
