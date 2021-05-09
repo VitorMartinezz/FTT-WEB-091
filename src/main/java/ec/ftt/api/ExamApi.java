@@ -1,6 +1,8 @@
 package ec.ftt.api;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,20 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import ec.ftt.dao.DoctorDao;
-import ec.ftt.model.Doctor;
+import ec.ftt.dao.ExamDao;
+import ec.ftt.model.Exam;
 
 /**
- * Servlet implementation class DoctorApi
+ * Servlet implementation class ExamApi
  */
-@WebServlet("/DoctorApi")
-public class DoctorApi extends HttpServlet {
+@WebServlet("/ExamApi")
+public class ExamApi extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DoctorApi() {
+    public ExamApi() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,23 +36,23 @@ public class DoctorApi extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setStatus(418); //200 - OK - Padrão (Default)
+		response.setStatus(200); //200 - OK - Padrão (Default)
 
-		String doctorId = request.getParameter("doctor-id");
-		DoctorDao doctorDao = new DoctorDao();
+		String examId = request.getParameter("doctor-id");
+		ExamDao examDao = new ExamDao();
 		
-	    if(doctorId != null) {
-	    	long id = Long.valueOf(doctorId);
+	    if(examId != null) {
+	    	long id = Long.valueOf(examId);
 	    	
-	        Doctor doctor = doctorDao.getDoctorById(id);
+	        Exam exam = examDao.getExamById(id);
 	     	Gson gson = new Gson();
-	    	response.getWriter().append(gson.toJson(doctor));
+	    	response.getWriter().append(gson.toJson(exam));
 	    	
 	    } else {
 	    	
-	    	List<Doctor> doctors = doctorDao.getAllDoctor();
+	    	List<Exam> exams = examDao.getAllExams();
 	    	Gson gson = new Gson();
-	    	response.getWriter().append(gson.toJson(doctors));
+	    	response.getWriter().append(gson.toJson(exams));
 
 	    } 
 	}
@@ -60,21 +62,20 @@ public class DoctorApi extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Doctor d = new Doctor(
-				request.getParameter("doctor-id"),
-				request.getParameter("doctor-name"),
-				request.getParameter("doctor-email"),
-				request.getParameter("doctor-crm"),
-				request.getParameter("doctor-unity")
+		Exam ex = new Exam(
+				request.getParameter("exam-id"),
+				request.getParameter("exam-study"),
+				request.getParameter("exam-type"),
+				getDateNow()
 				);
 		
-		DoctorDao doctorDao = new DoctorDao();
+		ExamDao examDao = new ExamDao();
 		
-		doctorDao.addDoctor(d);
+		examDao.addExam(ex);
 		
 		Gson gson = new Gson();
 		
-		response.getWriter().append(gson.toJson(d));
+		response.getWriter().append(gson.toJson(ex));
 	}
 
 	/**
@@ -83,20 +84,19 @@ public class DoctorApi extends HttpServlet {
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json"); //mimeType - https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-		Doctor d = new Doctor(
-				request.getParameter("doctor-id"),
-				request.getParameter("doctor-name"),
-				request.getParameter("doctor-email"),
-				request.getParameter("doctor-crm"),
-				request.getParameter("doctor-unity")
+		Exam ex = new Exam(
+				request.getParameter("exam-id"),
+				request.getParameter("exam-study"),
+				request.getParameter("exam-type"),
+				getDateNow()
 				);
-		DoctorDao doctorDao = new DoctorDao();
+		ExamDao examDao = new ExamDao();
 		
-		doctorDao.updateDoctor(d);
+		examDao.updateExam(ex);
 		
-		System.out.println(d);
+		Gson gson = new Gson();
 		
-		response.getWriter().append(d.toString());
+		response.getWriter().append(gson.toJson(ex));
 	}
 
 	/**
@@ -106,18 +106,23 @@ public class DoctorApi extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setStatus(418); //200 - OK - Padrão (Default)
 
-		if (request.getParameter("doctor-id") == null)
+		if (request.getParameter("exam-id") == null)
 			 response.sendError(407, "Informe o ID do usuário a ser retornado!!!" );
 		else {
-		Long doctorId = Long.valueOf(request.getParameter("doctor-id"));
+		Long examId = Long.valueOf(request.getParameter("exam-id"));
 		
+		ExamDao examDao= new ExamDao();
 		
+		examDao.deleteExam(examId);
 		
-		DoctorDao doctorDao= new DoctorDao();
-		
-		doctorDao.deleteDoctor(doctorId);
-		
-		response.getWriter().append(request.getParameter("doctor-id") + " User removido");
+		response.getWriter().append(request.getParameter("exam-id") + " User removido");
 		}
 	}
+	
+	private String getDateNow() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		   return dtf.format(now).toString();  
+	}
+
 }
