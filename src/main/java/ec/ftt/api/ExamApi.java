@@ -30,6 +30,21 @@ public class ExamApi extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+	          throws ServletException, IOException {
+	      setAccessControlHeaders(resp);
+	      resp.setStatus(HttpServletResponse.SC_OK);
+	  }
+	
+	 private void setAccessControlHeaders(HttpServletResponse resp) {
+	      resp.setHeader("Access-Control-Allow-Origin", "*");
+	      resp.setHeader("Access-Control-Allow-Methods", "GET");
+	      resp.setHeader("Access-Control-Allow-Methods", "POST");
+	      resp.setHeader("Access-Control-Allow-Methods", "PUT");
+	      resp.setHeader("Access-Control-Allow-Methods", "DELETE");
+	      resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	  }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +52,7 @@ public class ExamApi extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setStatus(200); //200 - OK - Padrão (Default)
-
+		setAccessControlHeaders(response);
 		String examId = request.getParameter("exam-id");
 		ExamDao examDao = new ExamDao();
 		
@@ -62,6 +77,7 @@ public class ExamApi extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		setAccessControlHeaders(response);
 		Exam ex = new Exam(
 				request.getParameter("exam-id"),
 				request.getParameter("exam-study"),
@@ -83,6 +99,7 @@ public class ExamApi extends HttpServlet {
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		setAccessControlHeaders(response);
 		response.setContentType("application/json"); //mimeType - https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 		Exam ex = new Exam(
 				request.getParameter("exam-id"),
@@ -104,8 +121,7 @@ public class ExamApi extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setStatus(418); //200 - OK - Padrão (Default)
-
+		setAccessControlHeaders(response);
 		if (request.getParameter("exam-id") == null)
 			 response.sendError(407, "Informe o ID do usuário a ser retornado!!!" );
 		else {
