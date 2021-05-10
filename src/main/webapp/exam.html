@@ -41,7 +41,7 @@ body {
 							<a href="./index.html" class="text-decoration-none mb-5">Menu</a>
 						</div>
 						
-						<h2>Exame</h2>
+						<h2 id="title">Exame</h2>
 						<div class="mb-3">
 							<input type="number" class="form-control" placeholder="Id"
 								name="exam-id" id="exam-id" min="0" required>
@@ -56,10 +56,60 @@ body {
 								name="exam-type" required>
 						</div>
 						<button type="submit" class="btn btn-primary" id="submit">Cadastrar</button>
+						<button type="button" class="btn btn-primary" id="submitUpdate" onclick="updateExam()" style="display: none;">Atualizar</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script>
+
+function updateExam(){
+	let data = $("form").serializeArray()
+
+    let params = new URLSearchParams(location.search)
+    let id = params.get("exam-id")
+
+    data.push({ name: "exam-id", value: id})
+    let url = "/FTT-WEB-091/ExamApi?"
+
+    data.forEach(dataValue => {
+        url += `${dataValue.name}=${dataValue.value}&`
+    })
+    
+	//let url = `FTT-WEB-091/doctor?doctor-id=${doctor-id}&doctor-name=${doctor-name}&doctor-email=${doctor-email}&doctor-crm=${doctor-crm}&doctor-unity=${doctor-unity}`
+		$.ajax({
+            method: "put", url
+        }).then(() => {
+            location.href = "./examTable.html"
+        })
+}
+
+
+function isEdit(){
+	let params = new URLSearchParams(location.search)
+	let id = params.get("exam-id")
+	
+	if(id){
+		$('#title').text("Atualizar Cadastro do Exames")
+		$('#submit').hide()
+		$('#submitUpdate').show()
+		$('#exam-id').prop('disabled',true)
+		$('#exam-id').attr('value',id)
+		
+		 $.ajax({
+       		method: "get",
+        	url: "/FTT-WEB-091/ExamApi?exam-id=" + id
+    	}).then(resp => {
+    		$('#exam-study').attr('value',resp.study)
+    		$('#exam-type').attr('value',resp.type)
+    	})
+    
+	}
+}
+
+isEdit()
+
+</script>
 </html>

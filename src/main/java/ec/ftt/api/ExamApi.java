@@ -51,6 +51,7 @@ public class ExamApi extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		response.setContentType("application/json");
 		response.setStatus(200); //200 - OK - Padrão (Default)
 		setAccessControlHeaders(response);
 		String examId = request.getParameter("exam-id");

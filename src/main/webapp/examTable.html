@@ -699,7 +699,7 @@ function getExams() {
         method: "get",
         url: "/FTT-WEB-091/ExamApi"
     }).then(resp => {
-        let exams = JSON.parse(resp)
+        let exams = resp
 
         let tableHtml = ""
 
@@ -710,7 +710,10 @@ function getExams() {
                     <td>${exam.study}</td>
                     <td>${exam.type}</td>
                     <td>${exam.date}</td>
-                    <td><a href="#" onclick="deleteExam(${exam.id})"><i class="fas fa-trash-alt" style="color: red; text-decoration: none;"></i></a></td>
+                    <td>
+                    <a href="#" onclick="deleteExam(${exam.id})"><i class="fas fa-trash-alt" style="color: red; text-decoration: none;"></i></a>
+                    <a href="${"/FTT-WEB-091/exam.html?exam-id=" + exam.id}"><i class="fas fa-pencil-alt" style="color: orange; text-decoration: none;"></i></a>
+                    </td>
                 </tr>
             `
         });

@@ -670,7 +670,7 @@ $(document).ready(function(){
 							<div class="mb-3">
 							<a href="./index.html" class="text-decoration-none mb-5">Menu</a>
 						</div>
-							<h2>Exames</h2>
+							<h2>Médicos</h2>
 						</div>
 					</div>
 				</div>
@@ -712,7 +712,10 @@ function getDoctors() {
                     <td>${doctor.email}</td>
                     <td>${doctor.crm}</td>
                     <td>${doctor.unity}</td>
-                    <td><a href="#" onclick="deleteExam(${doctor.id})"><i class="fas fa-trash-alt" style="color: red; text-decoration: none;"></i></a></td>
+                    <td>
+                    <a href="#" onclick="deleteDoctor(${doctor.id})"><i class="fas fa-trash-alt" style="color: red; text-decoration: none;"></i></a>
+                    <a href="${"/FTT-WEB-091/doctor.html?doctor-id=" + doctor.id}"><i class="fas fa-pencil-alt" style="color: orange; text-decoration: none;"></i></a>
+                    </td>
                 </tr>
             `
         });
@@ -721,7 +724,7 @@ function getDoctors() {
     })
 }
 
-function deleteExam(id){
+function deleteDoctor(id){
 	$.ajax({
         method: "delete",
         url: `/FTT-WEB-091/DoctorApi?doctor-id=${id}`

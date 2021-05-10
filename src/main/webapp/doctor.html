@@ -40,7 +40,7 @@ body {
 						<div class="mb-3">
 							<a href="./index.html" class="text-decoration-none mb-5">Menu</a>
 						</div>
-						<h2>Médico</h2>
+						<h2 id="title">Médico</h2>
 						<div class="mb-3">
 							<input type="number" class="form-control" placeholder="Id"
 								name="doctor-id" id="doctor-id" min="0" required>
@@ -50,9 +50,8 @@ body {
 								name="doctor-name" id="doctor-name" required>
 						</div>
 						<div class="input-group mb-3">
-							<input type="text" class="form-control"
-								placeholder="E-Mail" id="doctor-email"
-								name="doctor-email" required>
+							<input type="text" class="form-control" placeholder="E-Mail"
+								id="doctor-email" name="doctor-email" required>
 						</div>
 						<div class="mb-3">
 							<input type="text" class="form-control" placeholder="CRM"
@@ -63,6 +62,7 @@ body {
 								name="doctor-unity" id="doctor-unity" required>
 						</div>
 						<button type="submit" class="btn btn-primary" id="submit">Cadastrar</button>
+						<button type="button" class="btn btn-primary" id="submitUpdate" onclick="updateDoctor()" style="display: none;">Atualizar</button>
 					</form>
 				</div>
 			</div>
@@ -70,3 +70,55 @@ body {
 	</div>
 </body>
 </html>
+<script>
+
+function updateDoctor(){
+	let data = $("form").serializeArray()
+
+    let params = new URLSearchParams(location.search)
+    let id = params.get("doctor-id")
+
+    data.push({ name: "doctor-id", value: id})
+    let url = "/FTT-WEB-091/DoctorApi?"
+
+    data.forEach(dataValue => {
+        url += `${dataValue.name}=${dataValue.value}&`
+    })
+    
+	//let url = `FTT-WEB-091/doctor?doctor-id=${doctor-id}&doctor-name=${doctor-name}&doctor-email=${doctor-email}&doctor-crm=${doctor-crm}&doctor-unity=${doctor-unity}`
+		$.ajax({
+            method: "put", url
+        }).then(() => {
+            location.href = "./doctorTable.html"
+        })
+}
+
+
+function isEdit(){
+	let params = new URLSearchParams(location.search)
+	let id = params.get("doctor-id")
+	
+	if(id){
+		$('#title').text("Atualizar Cadastro do Médico")
+		$('#submit').hide()
+		$('#submitUpdate').show()
+		$('#doctor-id').prop('disabled',true)
+		$('#doctor-id').attr('value',id)
+		
+		 $.ajax({
+       		method: "get",
+        	url: "/FTT-WEB-091/DoctorApi?doctor-id=" + id
+    	}).then(resp => {
+    		
+    		$('#doctor-name').attr('value',resp.name)
+    		$('#doctor-email').attr('value',resp.email)
+    		$('#doctor-crm').attr('value',resp.crm)
+    		$('#doctor-unity').attr('value',resp.unity)
+    		
+    	})
+    
+	}
+}
+	isEdit()
+
+</script>

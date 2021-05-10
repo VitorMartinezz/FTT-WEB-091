@@ -91,9 +91,8 @@ public class DoctorApi extends HttpServlet {
 
 		doctorDao.updateDoctor(d);
 
-		System.out.println(d);
-
-		response.getWriter().append(d.toString());
+		Gson gson = new Gson();
+		response.getWriter().append(gson.toJson(d));
 	}
 
 	/**

@@ -67,7 +67,7 @@ public class DoctorDao {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("UPDATE ftt.DOCTOR SET NAME=?, " 
                     		                          + "EMAIL=?, " 
-                    		                          + "CRM=? " 
+                    		                          + "CRM=?, " 
                     		                          + "UNITY=? " 
                                                + "WHERE ID=?");
             
